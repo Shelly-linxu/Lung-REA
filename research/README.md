@@ -30,3 +30,7 @@ No participant-level files, mortality rows, fitted pickle objects, credentials o
 - Reference CSV SHA-256: `9e28a3809823d4316abaf9d1ca18a970d6ba7495abef846e87879bd07bbc07dd`
 
 [Verify these files and synthetic scoring](REPRODUCING.md#1-verify-the-released-scorer) before applying them. A newly fitted model requires its own version and evaluation. The public model estimates mortality risk, not lung tissue age, life expectancy or treatment effects. Clinical benefit has not been tested.
+
+## Later conditional transport analysis
+
+The [GBCS analysis code and assumptions](GBCS_CONDITIONAL_ANALYSIS.md) are available separately. This update publishes code/documentation only, without GBCS data or results, and does not alter the final NHANES model.

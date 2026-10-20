@@ -18,3 +18,7 @@
 The historical folder name `NHANES_stability_v20` is retained solely to satisfy the original core import. The development class name `Expanded` is also retained for provenance. Neither identifies an alternative model for deployment. The saved amendment mentions earlier temporal diagnostics; no separately fitted temporal model is part of this final release.
 
 Preparation scripts retain original project-relative paths so the provenance is visible. They must not be presented as a one-command workflow from raw data. Follow `REPRODUCING.md` for what can be run directly and which prerequisites remain local.
+
+## Additional exploratory analysis
+
+`code/gbcs_conditional_transport.py` documents the later conditional GBCS exercise. See [its assumptions and local execution requirements](GBCS_CONDITIONAL_ANALYSIS.md). It is separate from model development and is not complete external validation.
