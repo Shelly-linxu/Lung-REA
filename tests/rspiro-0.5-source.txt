@@ -1,0 +1,157 @@
+# rspiro 0.5, Theodore Lytras; GPL >=2
+function (age, height, gender = 1, param = "FEV1") 
+{
+    param <- toupper(unique(param[!is.na(param)]))
+    if (length(param) == 0) 
+        stop("You must specify at least one parameter to calculate.")
+    if (sum(!(param %in% c("FEV1", "FVC", "FEV1FVC"))) > 0) 
+        stop(sprintf("Argument 'param' must be one or more of \"%s\".", 
+            paste(unique(GLIgl_lookup$f), collapse = "\", \"")))
+    dat <- rspiro_check_somat(age, height, gender, 1)
+    dat$id <- 1:nrow(dat)
+    dat$ethnicity <- NULL
+    dat <- do.call(rbind, lapply(param, function(x) {
+        dat$f <- x
+        dat
+    }))
+    dat <- merge(dat, GLIgl_lookup, sort = FALSE, all.x = TRUE)
+    dat <- dat[order(factor(dat$f, levels = levels(factor(GLIgl_lookup$f))), 
+        dat$id), ]
+    dat$L <- dat$M <- dat$S <- NA
+    s <- dat$gender == 1 & dat$f == "FEV1"
+    dat$M[s] <- with(dat, exp(-11.399108 + 2.462664 * log(height[s] * 
+        100) - 0.011394 * log(age[s]) + Mspline[s]))
+    dat$S[s] <- with(dat, exp(-2.256278 + 0.080729 * log(age[s]) + 
+        Sspline[s]))
+    dat$L[s] <- 1.22703
+    s <- dat$gender == 1 & dat$f == "FVC"
+    dat$M[s] <- with(dat, exp(-12.629131 + 2.727421 * log(height[s] * 
+        100) + 0.009174 * log(age[s]) + Mspline[s]))
+    dat$S[s] <- with(dat, exp(-2.195595 + 0.068466 * log(age[s]) + 
+        Sspline[s]))
+    dat$L[s] <- 0.9346
+    s <- dat$gender == 1 & dat$f == "FEV1FVC"
+    dat$M[s] <- with(dat, exp(1.022608 - 0.218592 * log(height[s] * 
+        100) - 0.027586 * log(age[s]) + Mspline[s]))
+    dat$S[s] <- with(dat, exp(-2.882025 + 0.068889 * log(age[s]) + 
+        Sspline[s]))
+    dat$L[s] <- with(dat, 3.8243 - 0.3328 * log(age[s]))
+    s <- dat$gender == 2 & dat$f == "FEV1"
+    dat$M[s] <- with(dat, exp(-10.901689 + 2.385928 * log(height[s] * 
+        100) - 0.076386 * log(age[s]) + Mspline[s]))
+    dat$S[s] <- with(dat, exp(-2.364047 + 0.129402 * log(age[s]) + 
+        Sspline[s]))
+    dat$L[s] <- 1.21388
+    s <- dat$gender == 2 & dat$f == "FVC"
+    dat$M[s] <- with(dat, exp(-12.055901 + 2.621579 * log(height[s] * 
+        100) - 0.035975 * log(age[s]) + Mspline[s]))
+    dat$S[s] <- with(dat, exp(-2.310148 + 0.120428 * log(age[s]) + 
+        Sspline[s]))
+    dat$L[s] <- 0.899
+    s <- dat$gender == 2 & dat$f == "FEV1FVC"
+    dat$M[s] <- with(dat, exp(0.9189568 - 0.1840671 * log(height[s] * 
+        100) - 0.0461306 * log(age[s]) + Mspline[s]))
+    dat$S[s] <- with(dat, exp(-3.171582 + 0.144358 * log(age[s]) + 
+        Sspline[s]))
+    dat$L[s] <- with(dat, 6.649 - 0.992 * log(age[s]))
+    dat[, c("id", "age", "height", "gender", "f", "L", "M", "S")]
+}
+<bytecode: 0x13750a760>
+<environment: namespace:rspiro>
+function (age, height, gender = 1, FEV1 = NULL, FVC = NULL, FEV1FVC = NULL) 
+{
+    spiro_val <- list(FEV1 = FEV1, FVC = FVC, FEV1FVC = FEV1FVC)
+    spiro_val <- spiro_val[!sapply(spiro_val, is.null)]
+    spiro_val_len <- unique(sapply(spiro_val, length))
+    somat_val <- rspiro_check_somat(age, height, gender, 1)
+    rspiro_check_input(spiro_val, somat_val)
+    param <- names(spiro_val)
+    dat <- with(somat_val, getLMS_GLIgl(age, height, gender, 
+        param))
+    if (nrow(dat) == 1 && spiro_val_len > 1) {
+        dat <- dat[rep(1, spiro_val_len), ]
+        rownames(dat) <- NULL
+        dat$id <- 1:nrow(dat)
+    }
+    val <- as.data.frame.matrix(do.call(cbind, spiro_val))
+    val$id <- 1:nrow(val)
+    val <- reshape(val, direction = "long", varying = param, 
+        times = param, timevar = "f", v.names = "obs")
+    dat <- merge(dat, val)
+    dat$z.score <- with(dat, ((obs/M)^L - 1)/(L * S))
+    datw <- reshape(dat[, c("id", "f", "age", "height", "gender", 
+        "z.score")], v.names = "z.score", idvar = "id", direction = "wide", 
+        timevar = "f")
+    rownames(datw) <- NULL
+    datw <- datw[order(datw$id), ]
+    datw[, paste("z.score", unique(param), sep = ".")]
+}
+<bytecode: 0x13753ee40>
+<environment: namespace:rspiro>
+function (age, height, gender, ethnicity, NHANES = FALSE, JRS = FALSE, 
+    diff = FALSE) 
+{
+    mlen <- max(length(age), length(height), length(gender), 
+        length(ethnicity))
+    if (length(age) == 1) 
+        age <- rep(age, mlen)
+    if (length(height) == 1) 
+        height <- rep(height, mlen)
+    if (length(gender) == 1) 
+        gender <- rep(as.integer(gender), mlen)
+    if (length(ethnicity) == 1) 
+        ethnicity <- rep(ethnicity, mlen)
+    if (length(unique(c(length(age), length(height), length(gender), 
+        length(ethnicity)))) > 1) 
+        stop("All supplied vectors (age, height, gender, ethnicity) must have the same length.", 
+            call. = FALSE)
+    if (diff && (min(age, na.rm = TRUE) < 5 || max(age, na.rm = TRUE) > 
+        90)) {
+        age[which(age < 5 | age > 90)] <- NA
+        warning("Age cannot be lower than 5 years or higher than 90 years. Returning NA.", 
+            call. = FALSE)
+    }
+    if (JRS && (min(age, na.rm = TRUE) < 17 || max(age, na.rm = TRUE) > 
+        95)) {
+        age[which(age < 17 | age > 95)] <- NA
+        warning("Age cannot be lower than 17 years or higher than 95 years. Returning NA.", 
+            call. = FALSE)
+    }
+    if (!JRS && (min(age, na.rm = TRUE) < 3 || max(age, na.rm = TRUE) > 
+        95)) {
+        age[which(age < 3 | age > 95)] <- NA
+        warning("Age cannot be lower than 3 years or higher than 95 years. Returning NA.", 
+            call. = FALSE)
+    }
+    if (min(as.integer(gender), na.rm = TRUE) < 1 || max(as.integer(gender), 
+        na.rm = TRUE) > 2) {
+        gender[which(!(as.integer(gender) %in% 1:2))] <- NA
+        warning("You have specified more than two unique values for gender. Please check your data. Returning NA.", 
+            call. = FALSE)
+    }
+    if (min(height, na.rm = TRUE) < 1 | max(height, na.rm = TRUE) > 
+        2.5) 
+        warning("You have specified heights of <1m or >2.5m. Are you sure this is correct?")
+    if (NHANES) {
+        if (min(as.integer(ethnicity), na.rm = TRUE) < 1 || max(as.integer(ethnicity), 
+            na.rm = TRUE) > 3) {
+            ethnicity[which(!(as.integer(ethnicity) %in% 1:3))] <- NA
+            warning("Ethnicity should be a value between 1 and 3, or a factor with three levels. Please check your data. Returning NA.", 
+                call. = FALSE)
+        }
+    }
+    else {
+        if (min(as.integer(ethnicity), na.rm = TRUE) < 1 || max(as.integer(ethnicity), 
+            na.rm = TRUE) > 5) {
+            ethnicity[which(!(as.integer(ethnicity) %in% 1:5))] <- NA
+            warning("Ethnicity should be a value between 1 and 5, or a factor with five levels. Please check your data. Returning NA.", 
+                call. = FALSE)
+        }
+    }
+    res <- as.data.frame(cbind(age = age, height = height, gender = gender, 
+        ethnicity = as.integer(ethnicity), agebound = floor(age * 
+            4)/4))
+    res
+}
+<bytecode: 0x137580398>
+<environment: namespace:rspiro>

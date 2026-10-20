@@ -8,19 +8,19 @@ A bilingual English/Chinese browser calculator for **Lung Risk–Equivalent Age*
 
 Open `index.html` in a browser; no build, server or internet connection is required after downloading the repository. On GitHub use **Code → Download ZIP**, extract all files, and open `index.html`. If GitHub Pages is enabled, the same files work as a hosted static website.
 
-1. Enter the required age, sex, height, peak expiratory flow, smoking status, and FEV₁/FVC **GLI Global z scores**.
+1. Enter the required age, sex, height, peak expiratory flow, smoking status, and measured **FEV₁ and FVC in liters (L)**. The calculator automatically derives GLI Global z scores locally; users do not need to calculate them.
 2. Add known baseline smoking, clinical, socioeconomic and blood measurements. Unknown optional values use frozen development imputation constants and are listed in the result. Unknown diagnoses are not silently treated as “No”.
 3. Calculate. Toggle **English / 中文** without losing entered values or the result.
-4. Download CSV or JSON. Exports include entered values, scored values, imputed fields, full-precision results, model/reference hashes, version and time. Input edits invalidate prior results.
+4. Download CSV or JSON. Exports include raw measurements, selected units, canonical model inputs, scored values, imputed fields, full-precision results, model/reference hashes, version and time. Input edits invalidate prior results.
 
 The example is fictional, not a patient record. There is no bulk upload in this first release.
 
 ## Inputs and units
 
-- Baseline age: 50–79 years; height: **cm**, 120–210; peak expiratory flow: **L/min**, 60–1,000. The UI converts height to meters and peak flow to PEF/100 L/min for scoring.
-- FEV₁ and FVC: dimensionless **GLI Global z scores**, not raw volumes, FEV₁/FVC ratio, or percent predicted. This release does not compute z scores from raw spirometry. Obtain them using an independently validated GLI Global implementation; the study's R helper `compute_gli_zscores.R` is provided.
+- Baseline age: 50–79 years; height: **cm**, 120–210; peak expiratory flow: **L/min**, 60–1,000, or equivalent **L/s**. The UI converts height to meters and peak flow to PEF/100 L/min for scoring.
+- Default input: pre-bronchodilator **FEV₁ (0.5–8 L)** and **FVC (0.5–10 L)**. Do not enter mL, percent predicted, or the FEV₁/FVC ratio. Age, sex and height are used to derive GLI Global z scores automatically, using an implementation compatible with the study’s `rspiro 0.5` reference. Advanced mode accepts existing GLI Global z scores.
 - Smoking duration is an elapsed-years proxy, not pack-years. Current smoking intensity is harmonized to 0–95 cigarettes/day. Years since quitting is relevant to former smokers.
-- WBC: ×10⁹/L; hemoglobin and albumin: **g/dL**; RDW and lymphocytes: **%**. Albumin g/L must be divided by 10 before entering it.
+- WBC: ×10⁹/L; hemoglobin and albumin: **g/dL or g/L** (select the report’s unit); RDW and lymphocytes: **%**. Unit conversion is automatic.
 - Optional disease history and symptoms use Yes/No/Unknown. Lower education approximates less than high school. Income-to-poverty ratio is capped at 5 in the study.
 
 See `predictor_dictionary.csv` for source definitions. The UI adds plausibility checks to guard against unit errors; it cannot adjudicate spirometry quality, diagnosis or data provenance. Measurements should follow the study eligibility/quality criteria.
@@ -39,7 +39,7 @@ Calculations run entirely on the user's device. No input submission, analytics, 
 
 - Model SHA-256: `964e27d44b28f5b54b4ecb7c3a72da0c8639c61c7ac759bf28353979aeb3d5ad`
 - Reference SHA-256: `9e28a3809823d4316abaf9d1ca18a970d6ba7495abef846e87879bd07bbc07dd`
-- App version: `Lung-REA-web-1.0.0`
+- App version: `Lung-REA-web-1.1.0`
 
 `frozen_model.json` is byte-identical to the final research model. `model-data.js` embeds that specification and the age/risk columns from the original reference CSV at full precision. `MODEL_IDENTITY.json` is the original research-release identity file; its Python scorer hashes document provenance and do not identify JavaScript files. No participant-level study data are included in this repository.
 
@@ -51,6 +51,7 @@ Run the portable numerical checks with Node:
 
 ```sh
 node tests/core.test.cjs
+node tests/gli.test.cjs
 ```
 
 The separate browser test covers language switching, unit conversion, missing-data disclosure, downloads, invalid-input rejection, unsupported-age flags, stale results, smoking-state controls and a 390px responsive layout. Its local Playwright/Chrome paths must be adjusted for another machine. Browser-test output contains fictional data only.
@@ -63,3 +64,11 @@ The separate browser test covers language switching, unit conversion, missing-da
 - `MODEL_CARD_EN.md`, `predictor_dictionary.csv`: research context and predictor provenance.
 
 Implementation agreement does not establish clinical validity or a benefit of communicating risk as an age. Changes to the frozen model require a new model version and separate evaluation.
+
+## Raw-input conversion verification and licensing
+
+Version 1.1 adds raw spirometry and selectable laboratory/peak-flow units without changing the frozen prediction model or reference curves. The GLI converter agrees with `rspiro 0.5` on 500 artificial cases (maximum z-score absolute difference 5.76×10⁻¹³). The age-quarter spline lookup and exact-age logarithmic term preserve that implementation’s behavior. `tests/export-gli-reference.R` reproduces the reference fixtures and lookup export; no cohort records are distributed.
+
+`tests/browser-raw.test.cjs` verifies raw/advanced equivalence, unit conversions, English/Chinese switching, input guards, missing-data disclosure, downloads, reset and responsive layout. `tests/browser.test.cjs` invokes that current test. Browser reports from version 1.0 are historical records.
+
+GLI conversion code and lookup values derive from Theodore Lytras’s GPL-licensed `rspiro` package. This application is distributed under GPL-2.0-or-later; see `COPYING` and `THIRD_PARTY.md` for attribution and source details.

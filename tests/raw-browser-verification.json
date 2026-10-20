@@ -1,0 +1,19 @@
+{
+  "version": "1.1.0",
+  "passed": true,
+  "checks": [
+    "default raw FEV1/FVC input",
+    "local GLI conversion",
+    "advanced-mode equivalence",
+    "g/L and L/s conversion equivalence",
+    "bilingual values preserved",
+    "mL and inconsistent-volume rejection",
+    "missing optional values disclosed",
+    "CSV/JSON raw measurements and engineered values",
+    "input changes invalidate output",
+    "reset clears and restores units",
+    "390px no overflow",
+    "no uploads or page errors"
+  ],
+  "fictional_data_only": true
+}
