@@ -4,6 +4,8 @@ A bilingual English/Chinese browser calculator for **Lung Risk–Equivalent Age*
 
 ## Use
 
+**[Open the online calculator](https://shelly-linxu.github.io/Lung-REA/)** — English / 中文.
+
 Open `index.html` in a browser; no build, server or internet connection is required after downloading the repository. On GitHub use **Code → Download ZIP**, extract all files, and open `index.html`. If GitHub Pages is enabled, the same files work as a hosted static website.
 
 1. Enter the required age, sex, height, peak expiratory flow, smoking status, and FEV₁/FVC **GLI Global z scores**.

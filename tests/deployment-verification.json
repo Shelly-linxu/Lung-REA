@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-20",
+  "repository": "https://github.com/Shelly-linxu/Lung-REA",
+  "visibility": "public",
+  "website": "https://shelly-linxu.github.io/Lung-REA/",
+  "pages_source": "main / (root)",
+  "https": true,
+  "version": "Lung-REA-web-1.0.0",
+  "checks": [
+    "live page loads",
+    "fictional example agrees with local calculation",
+    "English/Chinese switch retains result",
+    "hosted JSON downloaded and verified",
+    "hosted CSV downloaded and verified"
+  ],
+  "individual_data_published": false,
+  "model_changed": false
+}
