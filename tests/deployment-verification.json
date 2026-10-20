@@ -1,18 +1,14 @@
 {
-  "date": "2026-10-20",
-  "repository": "https://github.com/Shelly-linxu/Lung-REA",
-  "visibility": "public",
-  "website": "https://shelly-linxu.github.io/Lung-REA/",
-  "pages_source": "main / (root)",
-  "https": true,
-  "version": "Lung-REA-web-1.0.0",
-  "checks": [
-    "live page loads",
-    "fictional example agrees with local calculation",
-    "English/Chinese switch retains result",
-    "hosted JSON downloaded and verified",
-    "hosted CSV downloaded and verified"
-  ],
-  "individual_data_published": false,
-  "model_changed": false
+  "version": "Lung-REA-web-1.1.0",
+  "url": "https://shelly-linxu.github.io/Lung-REA/",
+  "verified_on": "2026-10-20",
+  "source_commit": "7b239bf",
+  "live_raw_fields_visible": true,
+  "fictional_example": {
+    "FEV1_L": 2.4,
+    "FVC_L": 3.1,
+    "displayed_lung_rea_years": 59.3,
+    "displayed_risk_percent": 2.11
+  },
+  "model_unchanged": true
 }
