@@ -1,0 +1,25 @@
+{
+  "name": "Lung-REA",
+  "expanded_name": "Lung Risk\u2013Equivalent Age",
+  "underlying_model": "Five-year all-cause mortality constrained ridge/spline logistic model",
+  "development_population": "NHANES 2007\u20132012",
+  "development_n": 4915,
+  "development_events": 243,
+  "baseline_age_range": [
+    50,
+    79
+  ],
+  "predictor_count": 29,
+  "selected_penalty_C": 0.003,
+  "interactions": false,
+  "historical_evaluation_population": "NHANES III",
+  "historical_n": 4633,
+  "historical_events": 434,
+  "parameters_unchanged_from_original_freeze": true,
+  "files": {
+    "frozen_model.json": "964e27d44b28f5b54b4ecb7c3a72da0c8639c61c7ac759bf28353979aeb3d5ad",
+    "reference_curves.csv": "9e28a3809823d4316abaf9d1ca18a970d6ba7495abef846e87879bd07bbc07dd",
+    "score_frozen.py": "008f258bebedfdac742aa16bbe43c00f85718d9e37be5259fa1eea8bae8ea055",
+    "predict_lung_rea.py": "a661020311b7ae990756ec25ced00901390165c93a215b622f56196a635545e9"
+  }
+}

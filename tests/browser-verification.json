@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "checks": [
+    "required inputs",
+    "English and Chinese",
+    "centimeter/PEF unit conversion",
+    "frozen-imputation disclosure",
+    "JSON and CSV downloads",
+    "stale-result invalidation",
+    "out-of-range age flag without gap",
+    "smoking conditional inputs",
+    "clear form",
+    "390px responsive layout",
+    "no console errors",
+    "no network uploads"
+  ],
+  "tested_url": "local file",
+  "participant_data_used": false
+}

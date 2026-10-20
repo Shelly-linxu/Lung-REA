@@ -1,0 +1,30 @@
+feature,label,units_or_coding,mandatory_nonmissing,development_source_fields,historical_source_fields,harmonization
+age,"Age, y",years,True,RIDAGEYR,HSAGEIR,"Baseline years, restricted to 50–79"
+male,Male sex,0 female; 1 male,True,RIAGENDR,HSSEX,Raw 1 male to 1; raw 2 female to 0
+former_smoker,Former smoker,0/1,True,SMQ020; SMQ040,HAR1; HAR3,Ever at least100 cigarettes and no current smoking
+current_smoker,Current smoker,0/1,True,SMQ020; SMQ040,HAR1; HAR3,Ever at least100 cigarettes and current smoking
+current_cigs,Current cigarettes per day,cigarettes/day; zero if not current,False,SMD650,HAR4S,Zero if noncurrent; current source dose screened and harmonized to maximum95
+zFEV,FEV1 z score,GLI Global FEV1 z score,True,SPXNFEV1; RIDAGEYR; BMXHT; RIAGENDR,SPPFEV1; HSAGEIR; BMPHT; HSSEX,"FEV1 mL to L; GLI Global normalization with baseline age, height and sex"
+zFVC,FVC z score,GLI Global FVC z score,True,SPXNFVC; RIDAGEYR; BMXHT; RIAGENDR,SPPFVC; HSAGEIR; BMPHT; HSSEX,FVC mL to L; same GLI Global normalization
+bmi,"BMI, kg/m²",kg/m²,False,BMXBMI,BMPBMI; BMPWTFLG,Measured BMI; inherited plausibility/substitution rules precede imputation
+smoking_duration_proxy,"Elapsed smoking duration, y",years; zero if never,False,SMD030; SMD055,HAR2; HAR11R,Current: age minus initiation; former: cessation minus initiation; never0; negative duration missing
+pef100,"Peak flow, 100 L/min",PEF in L/min divided by 100,True,SPXNPEF,SPPPEAK,"Raw mL/s multiplied by0.06 to L/min, then divided by100"
+height,"Height, m",meters,True,BMXHT,BMPHT; BMPHTFLG,Height cm divided by100; NHANES III directly measured height required
+asthma,Asthma,0 no; 1 yes,False,MCQ010,HAC1E,History of asthma; raw1 yes; raw2 no
+chronic_lung,Chronic lung disease,0 no; 1 yes,False,MCQ160G; MCQ160K,HAC1F; HAC1G,History of emphysema or chronic bronchitis; any yes1; both no0; otherwise missing
+cough,Cough,0 no; 1 yes,False,RDQ031,HAL1,Raw respiratory question1 yes;2 no
+phlegm,Phlegm,0 no; 1 yes,False,RDQ050,HAL3,Raw respiratory question1 yes;2 no
+wheeze,Wheeze,0 no; 1 yes,False,RDQ070,HAL6,Raw respiratory question1 yes;2 no
+low_education,Lower education,0 no; 1 yes,False,DMDEDUC2,HFA8R,Modern valid categories1–2; historical completed education below12years
+poverty_ratio,Income poverty ratio,ratio capped at 5,False,INDFMPIR,DMPPIR,Valid source income poverty ratio; historical capped at5
+quit_years,Years since quitting,years; zero if not former,False,SMD055,HAR11R,Former smoker age minus cessation age; other states0
+heart_failure,Heart failure,0 no; 1 yes,False,MCQ160B,HAC1C,Raw1 yes;2 no
+heart_attack,Myocardial infarction,0 no; 1 yes,False,MCQ160E,HAF10,Raw1 yes;2 no
+stroke,Stroke,0 no; 1 yes,False,MCQ160F,HAC1D,Raw1 yes;2 no
+hypertension,Hypertension,0 no; 1 yes,False,BPQ020,HAE2,Raw1 yes;2 no
+diabetes,Diabetes,0 no; 1 yes,False,DIQ010,HAD1; HAD3; HAD4,"Modern1 yes,2/3 no; historical pregnancy-only handling retained"
+wbc,"White cells, 10⁹/L",10^9/L,False,LBXWBCSI,WCPSI,White blood cell count in10^9/L
+hemoglobin,"Hemoglobin, g/dL",g/dL,False,LBXHGB,HGP,Hemoglobin in g/dL
+rdw,"Red cell distribution width, %",percent,False,LBXRDW,RWP,Red cell distribution width percent
+lymph_pct,"Lymphocytes, %",percent,False,LBXLYPCT,LMPPCNT,Lymphocyte percentage
+albumin,"Albumin, g/dL",g/dL,False,LBXSAL,AMP,Albumin in g/dL
