@@ -72,3 +72,8 @@ Version 1.1 adds raw spirometry and selectable laboratory/peak-flow units withou
 `tests/browser-raw.test.cjs` verifies raw/advanced equivalence, unit conversions, English/Chinese switching, input guards, missing-data disclosure, downloads, reset and responsive layout. `tests/browser.test.cjs` invokes that current test. Browser reports from version 1.0 are historical records.
 
 GLI conversion code and lookup values derive from Theodore Lytras’s GPL-licensed `rspiro` package. This application is distributed under GPL-2.0-or-later; see `COPYING` and `THIRD_PARTY.md` for attribution and source details.
+
+
+## Research analysis and public data sources
+
+See [research/README.md](research/README.md) for the final development code, frozen Python scorer, public NHANES source files, predictor coding and reproduction instructions. The documentation distinguishes internal validation from historical evaluation and states the remaining raw-data preparation requirements. No individual records are included.

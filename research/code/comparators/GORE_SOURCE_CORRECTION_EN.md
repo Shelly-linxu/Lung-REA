@@ -1,0 +1,5 @@
+# Source transcription correction
+
+19 October 2026, before final manuscript delivery. Magnified original Table1 revealed Gore uses height in meters and a CUBIC height term: male age=(2.081+0.5846*h^3-FEV1)/(0.01599*h); female age=(1.597+0.5552*h^3-FEV1)/(0.01574*h). The first transcription incorrectly used linear height in inches. That exploratory run is archived locally and is superseded. This correction is based exclusively on the published equation and units, not favorable outcome performance. All mappings and evaluations are rerun and frozen again before rescoring historical data. The primary Morris/Newbury results do not change.
+
+Original Table2 phantom values corroborate Gore once corrected (male178cm/FEV1=4.5L gives30.8; female165cm/FEV1=3.2L gives34.3). Other reproduced equations agree with the phantom table within displayed rounding. Morris Table2 differs from the verified1985 formula by a constant height-equivalent offset within sex (about1.9years in men/2.2years in women), despite the listed phantom heights. We retain the independently checked original1985 coefficients and inch conversion, and do not force agreement with that later table.

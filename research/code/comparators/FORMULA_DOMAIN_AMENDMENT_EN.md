@@ -1,0 +1,3 @@
+# Quadratic equation domain handling
+
+Saved before mortality benchmark performance was calculated. Input-only checks found some FEV1/height combinations give a negative quadratic discriminant in the Hankinson or Falaschetti inversion, as anticipated by the original plan. Those formula ages and mapped risks remain missing. Within each original outer and inner partition, filter only the nonfinite formula rows before fitting/evaluation; do not impute or clip nonreal roots. Main Morris/Newbury pair retains all available rows. Every metric and paired contrast uses identical people for that pair or the explicitly reported common intersection. Freeze this amendment with the mappings.

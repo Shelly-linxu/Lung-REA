@@ -4,3 +4,15 @@ node_modules/
 *LOCAL_ONLY*
 result.json
 result.csv
+
+# Research inputs and participant-level outputs
+*_LOCAL_ONLY*
+*.pkl
+*.rds
+research/private/
+research/code/development/frozen_model.json
+research/code/development/reference_curves.csv
+research/code/development/tuning.csv
+research/code/development/selection.csv
+research/code/development/repeat_performance.csv
+__pycache__/

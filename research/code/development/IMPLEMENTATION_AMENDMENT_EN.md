@@ -1,0 +1,3 @@
+The laboratory branch uses the same validation design as v24; boosting is an exploratory risk benchmark, not an invertible age model.
+
+Before forward fitting: train on 2007–2010, select from the same candidates by three-fold training-only Brier score, then evaluate 2011–2012 without updating. These years have previously been inspected, so this is a temporal diagnostic rather than untouched confirmation. The repeated nested folds in the implementation are participant-level stratified folds, not PSU-held-out folds. Paired uncertainty intervals use participant bootstrap and are exploratory; complex-survey uncertainty and model-search optimism remain limitations.
